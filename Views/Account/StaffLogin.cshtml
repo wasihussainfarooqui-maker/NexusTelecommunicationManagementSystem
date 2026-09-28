@@ -1,0 +1,13 @@
+@model LoginViewModel
+@{ ViewData["Title"]="Staff Login"; }
+<div class="auth-page"><div class="auth-card reveal">
+    <span class="eyebrow">NEXUS STAFF ACCESS</span><h1>Staff <em>login.</em></h1>
+    <p>Use your assigned staff username and password. Your role determines the dashboard and operational access.</p>
+    <form asp-action="StaffLogin" method="post" class="form">
+        <div asp-validation-summary="ModelOnly" class="validation"></div>
+        <input asp-for="Username" placeholder="Staff username" autocomplete="username" required />
+        <input asp-for="Password" type="password" placeholder="Password" autocomplete="current-password" required />
+        <button class="btn primary" type="submit">Enter staff workspace ↗</button>
+    </form>
+    <div class="auth-note"><b>Staff roles:</b> Technical · Accounts · Retail Executive</div>
+</div></div>

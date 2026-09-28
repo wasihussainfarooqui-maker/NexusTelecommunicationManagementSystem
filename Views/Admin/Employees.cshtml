@@ -1,0 +1,18 @@
+@model IEnumerable<Employee>
+@{ ViewData["Title"] = "Employees"; }
+<div class="page-head reveal"><div><span class="eyebrow">EMPLOYEE MANAGEMENT</span><h1>People who run <em>NEXUS.</em></h1><p>Create staff accounts, change roles/status, edit profiles and reset passwords.</p></div></div>
+@if(TempData["Message"] is string msg){<div class="notice">@msg</div>} @if(TempData["Error"] is string err){<div class="notice">@err</div>}
+<div class="grid-2">
+<div class="panel reveal"><div class="panel-title"><div><span class="eyebrow">NEW STAFF ACCOUNT</span><h2>Add employee</h2></div></div>
+<form asp-action="AddEmployee" method="post" class="form">
+<input name="name" required placeholder="Full name" /><select name="role"><option>Technical</option><option>Accounts</option><option>Retail Executive</option><option>Support</option><option>Sales</option><option>Inventory</option><option>Administrator</option></select><input name="email" type="email" required placeholder="Email" /><input name="username" required placeholder="Login username" /><input name="password" type="password" minlength="8" required placeholder="Initial password" /><button class="btn primary">Create employee + login</button>
+</form></div>
+<div class="panel reveal"><span class="eyebrow">ACCESS MODEL</span><h2>Role-based staff access</h2><p>Staff login rejects customer/admin accounts and sends active employees to the role dashboard. Admin remains the only full control workspace.</p><p class="auth-note">For security, passwords are stored as PBKDF2-SHA256 hashes; only a new password can be set or reset.</p></div>
+</div>
+<div class="panel reveal"><div class="table-wrap"><table><thead><tr><th>Employee</th><th>Role</th><th>Login</th><th>Status</th><th>Edit</th><th>Password</th></tr></thead><tbody>
+@foreach(var x in Model){
+<tr><td><b>@x.Name</b><small>@x.Email</small></td><td>@x.Role</td><td>@(x.HasLogin ? x.Username : "No login")</td><td><span class="status @(x.Status=="Active"?"active":"due")">@x.Status</span></td>
+<td><details><summary class="mini-btn">Edit</summary><form asp-action="UpdateEmployee" method="post" class="admin-inline-edit"><input type="hidden" name="id" value="@x.Id"/><input name="name" value="@x.Name" required/><input name="email" type="email" value="@x.Email" required/><select name="role"><option value="Technical" selected="@(x.Role=="Technical" ? "selected" : null)">Technical</option><option value="Accounts" selected="@(x.Role=="Accounts" ? "selected" : null)">Accounts</option><option value="Retail Executive" selected="@(x.Role=="Retail Executive" ? "selected" : null)">Retail Executive</option><option value="Support" selected="@(x.Role=="Support" ? "selected" : null)">Support</option><option value="Sales" selected="@(x.Role=="Sales" ? "selected" : null)">Sales</option><option value="Inventory" selected="@(x.Role=="Inventory" ? "selected" : null)">Inventory</option><option value="Admin" selected="@(x.Role=="Admin" ? "selected" : null)">Admin</option></select><select name="status"><option value="Active" selected="@(x.Status=="Active" ? "selected" : null)">Active</option><option value="Inactive" selected="@(x.Status!="Active" ? "selected" : null)">Inactive</option></select><input name="username" value="@x.Username" placeholder="username"/><button class="mini-btn" type="submit">Save</button></form></details></td>
+<td><details><summary class="mini-btn">Reset</summary><form asp-action="ResetEmployeePassword" method="post" class="admin-inline-edit"><input type="hidden" name="id" value="@x.Id"/><input name="password" type="password" minlength="8" placeholder="New password" required/><button class="mini-btn" type="submit">Reset password</button></form></details></td></tr>
+}
+</tbody></table></div></div>

@@ -1,0 +1,7 @@
+using Microsoft.AspNetCore.Mvc; using NexusTelecommunicationManagementSystem.Models; using NexusTelecommunicationManagementSystem.Services;
+namespace NexusTelecommunicationManagementSystem.Controllers;
+public class OrderController : Controller { private readonly NexusService _nexus; public OrderController(NexusService n)=>_nexus=n;
+ [HttpGet] public IActionResult Index(int? planId){if(!IsCustomer())return RedirectToAction("Login","Account",new{returnUrl="/Order/Index"});return View(new NewOrderViewModel{PlanId=planId??_nexus.Plans.First().Id,FullName=HttpContext.Session.GetString("FullName")??""});}
+ [HttpPost][ValidateAntiForgeryToken] public IActionResult Index(NewOrderViewModel model){if(!IsCustomer())return RedirectToAction("Login","Account",new{returnUrl="/Order/Index"});if(string.IsNullOrWhiteSpace(model.FullName)||string.IsNullOrWhiteSpace(model.Contact)||string.IsNullOrWhiteSpace(model.Address)){ModelState.AddModelError("","Please complete your name, contact number and service address.");return View(model);}model.Email=GetProfile("Email")??model.Email;var code=_nexus.CreateOrder(model,HttpContext.Session.GetInt32("UserId")!.Value);return RedirectToAction("Success",new{code});}
+ public IActionResult Success(string code){if(!IsCustomer())return RedirectToAction("Login","Account");ViewBag.Code=code;return View();}
+ private bool IsCustomer()=>HttpContext.Session.GetString("Role")=="Customer"; private string? GetProfile(string f)=>_nexus.GetProfileField(HttpContext.Session.GetInt32("UserId")!.Value,f); }

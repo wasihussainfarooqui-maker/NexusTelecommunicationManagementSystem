@@ -1,0 +1,15 @@
+@model AdminDashboardViewModel
+@{ ViewData["Title"] = "Admin Dashboard"; }
+<section class="page-head reveal"><div><span class="eyebrow">NEXUS ADMINISTRATOR</span><h1>Good evening, <em>Administrator.</em></h1><p>Manage telecom services, customers, orders, connections and operational records from one workspace.</p></div><div class="head-actions"><button class="btn ghost" onclick="window.print()">Print report</button></div></section>
+@if (TempData["Message"] is not null) { <div class="alert reveal">✓ @TempData["Message"]</div> }
+<section class="metrics">
+ <article class="metric reveal"><span>CUSTOMERS</span><strong>@Model.Customers.ToString("N0")</strong><small>Registered records</small></article>
+ <article class="metric reveal"><span>TOTAL ORDERS</span><strong>@Model.Orders.ToString("N0")</strong><small>Applications received</small></article>
+ <article class="metric reveal"><span>ACTIVE CONNECTIONS</span><strong>@Model.ActiveConnections.ToString("N0")</strong><small>Currently active</small></article>
+ <article class="metric reveal"><span>OUTSTANDING</span><strong>$@Model.Outstanding.ToString("N0")</strong><small>Unpaid balance</small></article>
+</section>
+<section class="grid-2">
+ <div class="panel reveal"><div class="panel-title"><div><span class="eyebrow">ORDER PIPELINE</span><h2>Recent applications</h2></div><a href="/Admin/Orders">View all →</a></div><div class="table-wrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Service</th><th>Status</th></tr></thead><tbody>@foreach (var order in Model.RecentOrders) {<tr><td><b>@order.OrderCode</b><small>@order.ApplicationDate.ToString("dd MMM")</small></td><td>@order.CustomerName</td><td>@order.Plan.ConnectionType</td><td><span class="status @order.Status.ToString().ToLowerInvariant()">@order.Status</span></td></tr>}</tbody></table></div></div>
+ <div class="panel reveal"><div class="panel-title"><div><span class="eyebrow">OPERATIONS</span><h2>Attention required</h2></div></div><div class="attention"><a asp-action="Orders"><b>@Model.PendingFeasibility</b><span>Orders awaiting feasibility</span><i>→</i></a><a asp-action="Equipment"><b>@Model.LowStock</b><span>Equipment items at low stock</span><i>→</i></a><a asp-action="Employees"><b>@Model.Employees</b><span>Active employees</span><i>→</i></a></div></div>
+</section>
+<section class="quick reveal"><div><span class="eyebrow">QUICK MANAGEMENT</span><h2>Everything important, one click away.</h2></div><div class="quick-links"><a asp-action="Customers">Customers <b>→</b></a><a asp-action="Plans">Service plans <b>→</b></a><a asp-action="Billing">Billing <b>→</b></a><a asp-action="Equipment">Stock <b>→</b></a></div></section>

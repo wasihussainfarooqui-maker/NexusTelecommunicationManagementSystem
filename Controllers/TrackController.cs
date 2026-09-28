@@ -1,0 +1,3 @@
+using Microsoft.AspNetCore.Mvc; using NexusTelecommunicationManagementSystem.Models; using NexusTelecommunicationManagementSystem.Services;
+namespace NexusTelecommunicationManagementSystem.Controllers;
+public class TrackController:Controller{private readonly NexusService _nexus;public TrackController(NexusService n)=>_nexus=n;[HttpGet]public IActionResult Index(string? code)=>View(Find(code));[HttpPost][ValidateAntiForgeryToken]public IActionResult Index(TrackViewModel model)=>View(Find(model.Code));private TrackViewModel Find(string? code){var clean=code?.Trim()??"";return new(){Code=clean,Order=string.IsNullOrWhiteSpace(clean)?null:_nexus.TrackOrder(clean),Connection=string.IsNullOrWhiteSpace(clean)?null:_nexus.TrackConnection(clean)};}}

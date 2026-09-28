@@ -1,0 +1,3 @@
+using Microsoft.AspNetCore.Mvc; using NexusTelecommunicationManagementSystem.Services;
+namespace NexusTelecommunicationManagementSystem.Controllers;
+public class DashboardController : Controller {private readonly NexusService _nexus;public DashboardController(NexusService n)=>_nexus=n;public IActionResult Index(){if(!IsCustomer())return RedirectToAction("Login","Account");var id=HttpContext.Session.GetInt32("UserId")!.Value;var c=_nexus.GetConnections(id).FirstOrDefault();ViewBag.Connection=c;ViewBag.Order=_nexus.GetOrders(id).FirstOrDefault();return View(_nexus.GetBills(id));}private bool IsCustomer()=>HttpContext.Session.GetString("Role")=="Customer";}

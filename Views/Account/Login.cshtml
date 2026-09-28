@@ -1,0 +1,4 @@
+@model LoginViewModel
+@{ ViewData["Title"]="Customer Sign in"; }
+<section class="page-hero compact"><div class="container reveal"><span class="eyebrow">CUSTOMER ACCESS</span><h1>Welcome<br /><em>back.</em></h1><p>Sign in to manage your NEXUS services, orders and bills.</p></div></section>
+<section class="section form-section"><div class="container narrow"><div class="form-card reveal"><form asp-action="Login" method="post"><div asp-validation-summary="ModelOnly" class="validation"></div><label>Username<input asp-for="Username" autocomplete="username" required /></label><label>Password<input asp-for="Password" type="password" autocomplete="current-password" required /></label><button class="button button-primary full-button" type="submit">Sign in <span>↗</span></button></form><p style="margin-top:18px;color:#71827b;font-size:12px">New customer? <a asp-controller="Account" asp-action="Signup" style="color:var(--accent)">Create an account</a></p></div></div></section>

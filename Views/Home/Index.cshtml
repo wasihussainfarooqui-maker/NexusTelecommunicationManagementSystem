@@ -1,0 +1,23 @@
+@model IReadOnlyList<Plan>
+@{ ViewData["Title"] = "Connected, simply"; }
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-copy reveal">
+            <span class="eyebrow">NEXUS NETWORK · CUSTOMER PORTAL</span>
+            <h1>Connection that<br /><em>moves with you.</em></h1>
+            <p>Explore telecom services, request a connection, track your order and view your account from one calm, modern experience.</p>
+            <div class="button-row"><a class="button button-primary" asp-controller="Plans" asp-action="Index">Explore plans <span>↗</span></a><a class="button button-ghost" asp-controller="Track" asp-action="Index">Track an order</a></div>
+            <div class="trust-row"><span>● Service management</span><span>● Order tracking</span><span>● Customer portal</span></div>
+        </div>
+        <div class="network-visual reveal">
+            <div class="network-glow"></div><div class="network-orbit orbit-one"></div><div class="network-orbit orbit-two"></div>
+            <div class="network-core"><span>N</span><small>NEXUS<br />NETWORK</small></div>
+            <div class="network-node node-one">BROADBAND</div><div class="network-node node-two">ORDERS</div><div class="network-node node-three">ACCOUNT</div>
+            <div class="connection-line line-one"></div><div class="connection-line line-two"></div><div class="connection-line line-three"></div>
+        </div>
+    </div>
+</section>
+<section class="stats-strip"><div class="container stats-grid"><div><b>24/7</b><span>Service visibility</span></div><div><b>3</b><span>Connection types</span></div><div><b>1</b><span>Customer portal</span></div><div><b>100%</b><span>Digital tracking</span></div></div></section>
+<section class="section" id="services"><div class="container"><div class="section-heading reveal"><span class="eyebrow">WHAT WE PROVIDE</span><h2>Telecom, without the clutter.</h2><p>Choose the service that fits your home or business and keep the important details in one place.</p></div><div class="service-grid"><article class="feature-card reveal"><span class="feature-icon">⌁</span><h3>Broadband</h3><p>Unlimited broadband plans with clear pricing, service status and account tracking.</p><a asp-controller="Plans" asp-action="Index">View broadband →</a></article><article class="feature-card reveal"><span class="feature-icon">◉</span><h3>Dial-Up</h3><p>Simple dial-up service management with application and feasibility tracking.</p><a asp-controller="Plans" asp-action="Index">View dial-up →</a></article><article class="feature-card reveal"><span class="feature-icon">⌕</span><h3>Telephone</h3><p>Telephone service with plan details, customer information and billing visibility.</p><a asp-controller="Plans" asp-action="Index">View telephone →</a></article></div></div></section>
+<section class="section section-dark" id="plans"><div class="container"><div class="section-heading split reveal"><div><span class="eyebrow">PLANS</span><h2>Choose your connection.</h2></div><a class="text-link" asp-controller="Plans" asp-action="Index">See all plans →</a></div><div class="plan-grid">@foreach (var plan in Model.Take(3)) {<article class="plan-card reveal"><div class="plan-top"><span class="tag">@plan.ConnectionType</span><span class="speed">@plan.Speed</span></div><h3>@plan.Name</h3><p>@plan.Description</p><div class="price">$@plan.Price.ToString("0") <small>/ @plan.BillingCycle.ToLowerInvariant()</small></div><a asp-controller="Order" asp-action="Index" asp-route-planId="@plan.Id">Choose plan →</a></article>}</div></div></section>
+<section class="track-banner reveal"><div class="container track-inner"><div><span class="eyebrow">LIVE LOOKUP</span><h2>Know where your connection stands.</h2><p>Use your order ID or account ID to see the latest status.</p></div><form asp-controller="Track" asp-action="Index" method="post" class="track-form"><input name="Code" placeholder="B0000000001 or B001000000000001" aria-label="Order or account ID" /><button class="button button-primary" type="submit">Track status</button></form></div></section>

@@ -1,0 +1,10 @@
+@{ ViewData["Title"]="NEXUS AI Support"; }
+<div class="chat-page"><div class="chat-shell reveal">
+<div class="chat-head"><div><span class="eyebrow">NEXUS AI SUPPORT</span><h1>How can we <em>help?</em></h1><p>Ask about plans, connections, bills, tracking or basic troubleshooting.</p></div><span class="ai-badge">AI</span></div>
+<div id="chatMessages" class="chat-messages"><div class="chat-bubble bot">Hi! I’m the NEXUS customer support assistant. I can help with plans, connections, bills, tracking and basic troubleshooting. What can I help you with today?</div></div>
+<form id="chatForm" class="chat-form">@Html.AntiForgeryToken()<input id="chatInput" maxlength="2000" placeholder="Type your question..." autocomplete="off" /><button class="btn primary" type="submit">Send ↗</button></form>
+</div></div>
+@section Scripts {<script>
+const form=document.getElementById('chatForm'), input=document.getElementById('chatInput'), box=document.getElementById('chatMessages');
+form.addEventListener('submit',async e=>{e.preventDefault();const msg=input.value.trim();if(!msg)return;const u=document.createElement('div');u.className='chat-bubble user';u.textContent=msg;box.appendChild(u);input.value='';box.scrollTop=box.scrollHeight;const f=new FormData(form);f.append('message',msg);const b=document.createElement('div');b.className='chat-bubble bot';b.textContent='Thinking…';box.appendChild(b);try{const r=await fetch('@Url.Action("Ask","Chat")',{method:'POST',body:f});const j=await r.json();b.textContent=j.ok?j.response:j.error;}catch{b.textContent='Sorry, I could not reach the AI service right now.'}box.scrollTop=box.scrollHeight;});
+</script>}

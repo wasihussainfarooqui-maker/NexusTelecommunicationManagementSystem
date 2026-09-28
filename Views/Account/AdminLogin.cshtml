@@ -1,0 +1,4 @@
+@model LoginViewModel
+@{ ViewData["Title"]="Administrator Login"; }
+<section class="page-hero compact"><div class="container reveal"><span class="eyebrow">NEXUS CONTROL CENTER</span><h1>Administrator<br /><em>access.</em></h1><p>Admin accounts are provisioned by the system. There is no public administrator signup.</p></div></section>
+<section class="section form-section"><div class="container narrow"><div class="form-card reveal"><form asp-action="AdminLogin" method="post"><div asp-validation-summary="ModelOnly" class="validation"></div><label>Admin username<input asp-for="Username" value="admin" autocomplete="username" required /></label><label>Admin password<input asp-for="Password" type="password" autocomplete="current-password" required /></label><button class="button button-primary full-button" type="submit">Enter admin workspace <span>↗</span></button></form></div></div></section>
